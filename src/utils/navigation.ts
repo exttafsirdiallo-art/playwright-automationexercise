@@ -1,7 +1,7 @@
 import { expect, Page } from "@playwright/test";
 
-export async function openUrl(page: Page, url: string) {
-  await page.goto(url);
+export async function openHome(page: Page) {
+  await page.goto("/");
 }
 
 export async function assertPageTitle(page: Page, titleRegex: RegExp) {
