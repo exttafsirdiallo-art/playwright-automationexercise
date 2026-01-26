@@ -45,13 +45,16 @@ test("TC01 - Register User (complete)", async ({ page }) => {
   await accountInfo.continueAfterAccountCreated();
 
   //11 Vérifier que le user est bien connecté
-  await expect(page.getByAltText(/logged in as/i)).toBeVisible();
+  await expect(page.getByRole("link", { name: /logout/i })).toBeVisible();
 
-  // 12 Se deconnecter
-  await page.getByRole("link", { name: /logout/i }).click();
+  // 12 Supprimer le compte
+  await page.getByRole("link", { name: /delete account/i }).click();
 
-  // 13 Vérifier le retour sur la page login
+  // 13 Vérifier que le compte est bien supprimé
   await expect(
-    page.getByRole("heading", { name: /login to your account/i }),
+    page.getByRole("heading", { name: /account deleted!/i }),
   ).toBeVisible();
+
+  // 14 Cliquer sur Continue
+  await page.getByRole("link", { name: /continue/i }).click();
 });
