@@ -5,7 +5,7 @@ import { SignupLoginPage } from "../src/pages/SignupLoginPage";
 import { AccountInformationPage } from "../src/pages/AccountInformationPage";
 import { createUser } from "../src/data/userFactory";
 
-test("TC03 - Register User (complete)", async ({ page }) => {
+test("TC01 - Register User (complete)", async ({ page }) => {
   // 1) Ouvrir la Home
   await openHome(page);
 
