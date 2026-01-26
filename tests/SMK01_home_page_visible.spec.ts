@@ -2,7 +2,7 @@ import { test } from "@playwright/test";
 import { openHome, assertPageTitle } from "../src/utils/navigation";
 import { HomePage } from "../src/pages/HomePage";
 
-test("TC01 - Verify home page is visible successfully", async ({ page }) => {
+test("SMK01 - Home page is visible", async ({ page }) => {
   // 1️⃣ Ouvrir la page d'accueil
   await openHome(page);
 
