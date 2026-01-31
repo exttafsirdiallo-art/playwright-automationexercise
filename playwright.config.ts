@@ -8,13 +8,22 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
 
-  reporter: "html",
+  // ✅ HTML + console lisible
+  reporter: [["html"], ["line"]],
+
+  // ✅ garde-fous
+  timeout: 30_000,
+  expect: { timeout: 5_000 },
 
   use: {
     baseURL: "https://automationexercise.com",
     trace: "on-first-retry",
     screenshot: "only-on-failure",
     video: "retain-on-failure",
+
+    // optionnel (mais utile)
+    // actionTimeout: 10_000,
+    // navigationTimeout: 15_000,
   },
 
   projects: [
