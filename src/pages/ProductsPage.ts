@@ -95,4 +95,30 @@ export class ProductsPage {
       `Aucun produit ne contient "${keyword}" dans les résultats`,
     ).toBeGreaterThan(0);
   }
+  // ============================================================
+  // Panier (TC12)
+  // ============================================================
+
+  async addProductToCartByIndex(index: number) {
+    const card = this.productCards.nth(index);
+
+    // Le bouton "Add to cart" apparaît au hover
+    await card.hover();
+
+    const addBtn = card.locator('a:has-text("Add to cart")').first();
+    await expect(addBtn).toBeVisible();
+    await addBtn.click();
+  }
+
+  async continueShoppingFromModal() {
+    const btn = this.page.locator('button:has-text("Continue Shopping")');
+    await expect(btn).toBeVisible();
+    await btn.click();
+  }
+
+  async viewCartFromModal() {
+    const link = this.page.locator('a:has-text("View Cart")');
+    await expect(link).toBeVisible();
+    await link.click();
+  }
 }
