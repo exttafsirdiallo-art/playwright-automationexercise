@@ -8,7 +8,7 @@ import { createUser } from "../src/data/userFactory";
 test("TC01 - Register User (complete)", async ({ page }) => {
   // 1) Ouvrir la Home
   await openHome(page);
-
+  //Test
   const home = new HomePage(page);
 
   // 2) Accepter cookies si présent
