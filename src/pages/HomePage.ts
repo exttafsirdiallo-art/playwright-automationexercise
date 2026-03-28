@@ -21,6 +21,8 @@ export class HomePage {
   subscriptionEmailInput: Locator;
   subscriptionButton: Locator;
   subscriptionSuccessMessage: Locator;
+  loggedInAsText: Locator;
+  deleteAccountLink: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -46,6 +48,14 @@ export class HomePage {
     this.subscriptionEmailInput = this.page.locator("#susbscribe_email");
     this.subscriptionButton = this.page.locator("#subscribe");
     this.subscriptionSuccessMessage = this.page.locator("#success-subscribe");
+
+    this.loggedInAsText = this.page.locator("a").filter({
+      hasText: /logged in as/i,
+    });
+
+    this.deleteAccountLink = this.page.getByRole("link", {
+      name: /delete account/i,
+    });
   }
 
   // ============================================================
@@ -100,5 +110,15 @@ export class HomePage {
     await expect(this.subscriptionSuccessMessage).toContainText(
       /successfully subscribed/i,
     );
+  }
+
+  async checkLoggedInAs(username: string) {
+    // Vérifie que l'utilisateur est connecté
+    await expect(this.loggedInAsText).toContainText(username);
+  }
+
+  async goToDeleteAccount() {
+    // Clique sur Delete Account
+    await this.deleteAccountLink.click();
   }
 }
