@@ -1,12 +1,15 @@
-import { Page, Locator, expect } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
-export class AccountDeletedPage {
-  page: Page;
+export class AccountDeletedPage extends BasePage {
+  // =========================
+  // Confirmation
+  // =========================
   accountDeletedTitle: Locator;
   continueButton: Locator;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
 
     this.accountDeletedTitle = this.page.locator(
       'h2[data-qa="account-deleted"]',
@@ -14,13 +17,21 @@ export class AccountDeletedPage {
     this.continueButton = this.page.locator('a[data-qa="continue-button"]');
   }
 
+  // ============================================================
+  // Vérifications
+  // ============================================================
+
   async checkAccountDeletedIsVisible() {
     // Vérifie le message ACCOUNT DELETED!
-    await expect(this.accountDeletedTitle).toBeVisible();
+    await this.checkVisible(this.accountDeletedTitle);
   }
+
+  // ============================================================
+  // Actions
+  // ============================================================
 
   async continue() {
     // Clique sur Continue
-    await this.continueButton.click();
+    await this.click(this.continueButton);
   }
 }

@@ -1,28 +1,47 @@
-import { Page, expect } from "@playwright/test";
+import { Locator, Page } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
-export class AccountCreatedPage {
-  page: Page;
+export class AccountCreatedPage extends BasePage {
+  // =========================
+  // Confirmation
+  // =========================
+  accountCreatedTitle: Locator;
+  continueButton: Locator;
+  loggedInAsText: Locator;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
+
+    // Confirmation
+    this.accountCreatedTitle = this.page.locator(
+      'h2[data-qa="account-created"]',
+    );
+    this.continueButton = this.page.locator('a[data-qa="continue-button"]');
+    this.loggedInAsText = this.page.locator("a").filter({
+      hasText: /logged in as/i,
+    });
   }
+
+  // ============================================================
+  // Vérifications
+  // ============================================================
 
   async checkAccountCreatedIsVisible() {
     // Vérifie le message ACCOUNT CREATED!
-    await expect(
-      this.page.locator('h2[data-qa="account-created"]'),
-    ).toBeVisible();
-  }
-
-  async continue() {
-    // Clique sur Continue
-    await this.page.locator('a[data-qa="continue-button"]').click();
+    await this.checkVisible(this.accountCreatedTitle);
   }
 
   async checkLoggedInAs(username: string) {
     // Vérifie que l'utilisateur est connecté
-    await expect(
-      this.page.getByText(new RegExp(`logged in as\\s+${username}`, "i")),
-    ).toBeVisible();
+    await this.checkContainsText(this.loggedInAsText, username);
+  }
+
+  // ============================================================
+  // Actions
+  // ============================================================
+
+  async continue() {
+    // Clique sur Continue
+    await this.click(this.continueButton);
   }
 }
