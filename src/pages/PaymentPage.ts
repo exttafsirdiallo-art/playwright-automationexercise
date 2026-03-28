@@ -1,4 +1,5 @@
 import { Page, Locator, expect } from "@playwright/test";
+import { paymentData } from "../data/paymentData";
 
 export class PaymentPage {
   page: Page;
@@ -30,14 +31,14 @@ export class PaymentPage {
   }
 
   async fillPaymentInformation() {
-    // Remplit les informations de paiement
-    await this.checkPaymentPageIsVisible();
+    const card = paymentData.validCard;
 
-    await this.nameOnCardInput.fill("Test User");
-    await this.cardNumberInput.fill("4111111111111111");
-    await this.cvcInput.fill("123");
-    await this.expiryMonthInput.fill("12");
-    await this.expiryYearInput.fill("2030");
+    await this.checkPaymentPageIsVisible();
+    await this.nameOnCardInput.fill(card.nameOnCard);
+    await this.cardNumberInput.fill(card.cardNumber);
+    await this.cvcInput.fill(card.cvc);
+    await this.expiryMonthInput.fill(card.expiryMonth);
+    await this.expiryYearInput.fill(card.expiryYear);
   }
 
   async payAndConfirmOrder() {

@@ -8,6 +8,7 @@ import { AccountCreatedPage } from "../src/pages/AccountCreatedPage";
 import { CheckoutPage } from "../src/pages/CheckoutPage";
 import { PaymentPage } from "../src/pages/PaymentPage";
 import { createUser } from "../src/data/userFactory";
+import { orderData } from "../src/data/orderData";
 
 test.describe("TC14 - Place Order: Register while Checkout", () => {
   test("Créer un compte pendant le checkout et finaliser la commande", async ({
@@ -15,7 +16,7 @@ test.describe("TC14 - Place Order: Register while Checkout", () => {
   }) => {
     const user = createUser();
     const password = "Blancheporte1";
-    const comment = "Commande de test Playwright";
+    const comment = orderData.defaultComment;
 
     // 1) Ouvrir le site + accepter les cookies
     const homePage = new HomePage(page);

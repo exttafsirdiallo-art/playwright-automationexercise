@@ -1,11 +1,12 @@
 import { faker } from "@faker-js/faker";
 
-// Genere un user unique à chaque exécution
-
+// Génère un user unique à chaque exécution
 export function createUser() {
   const firstName = faker.person.firstName();
+  const uniqueId = Date.now();
+
   return {
     name: firstName,
-    email: faker.internet.email({ firstName }).toLowerCase(),
+    email: `${faker.internet.username({ firstName }).toLowerCase()}_${uniqueId}@example.com`,
   };
 }

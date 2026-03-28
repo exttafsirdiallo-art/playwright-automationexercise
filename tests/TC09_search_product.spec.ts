@@ -2,10 +2,11 @@ import { test } from "@playwright/test";
 import { ProductsPage } from "../src/pages/ProductsPage";
 import { openHome } from "../src/utils/navigation";
 import { HomePage } from "../src/pages/HomePage";
+import { orderData } from "../src/data/orderData";
 
 test.describe("TC09 - Search Product", () => {
   test("Rechercher un produit et vérifier les résultats", async ({ page }) => {
-    const keyword = "dress";
+    const keyword = orderData.searchKeyword;
 
     // 1) Ouvrir le site et accepter les cookies
     const home = new HomePage(page);

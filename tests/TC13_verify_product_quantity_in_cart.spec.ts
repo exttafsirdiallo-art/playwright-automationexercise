@@ -4,12 +4,13 @@ import { HomePage } from "../src/pages/HomePage";
 import { ProductsPage } from "../src/pages/ProductsPage";
 import { ProductDetailPage } from "../src/pages/ProductDetailPage";
 import { CartPage } from "../src/pages/CartPage";
+import { orderData } from "../src/data/orderData";
 
 test.describe("TC13 - Verify Product Quantity in Cart", () => {
   test("Ajouter un produit avec quantité 4 et vérifier dans le panier", async ({
     page,
   }) => {
-    const quantity = 4;
+    const quantity = orderData.defaultQuantity;
 
     // 1) Ouvrir le site
     const home = new HomePage(page);
