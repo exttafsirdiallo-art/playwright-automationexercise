@@ -123,6 +123,14 @@ export class CartPage {
     );
   }
 
+  async checkProductQuantity(expectedQty: number) {
+    const qtyText = (
+      await this.page.locator(".cart_quantity button").first().innerText()
+    ).trim();
+
+    expect(qtyText).toBe(String(expectedQty));
+  }
+
   // ============================================================
   // Utils
   // ============================================================
