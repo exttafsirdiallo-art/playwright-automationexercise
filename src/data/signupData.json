@@ -1,0 +1,13 @@
+{
+  "user": {
+    "lastName": "Diallo",
+    "company": "QA Company",
+    "address1": "10 rue de Paris",
+    "address2": "Batiment A",
+    "country": "Canada",
+    "state": "Quebec",
+    "city": "Montreal",
+    "zipcode": "75000",
+    "mobile": "0601020304"
+  }
+}

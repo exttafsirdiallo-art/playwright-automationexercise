@@ -4,7 +4,7 @@ export class HomePage {
   page: Page;
 
   // =========================
-  // Locators communs
+  // Header
   // =========================
   signupLoginLink: Locator;
 
@@ -14,7 +14,7 @@ export class HomePage {
   cookiesAcceptButton: Locator;
 
   // =========================
-  // TC10 - Subscription
+  // Footer / Subscription
   // =========================
   footer: Locator;
   subscriptionTitle: Locator;
@@ -25,17 +25,17 @@ export class HomePage {
   constructor(page: Page) {
     this.page = page;
 
-    // ---- Locators communs ----
+    // Header
     this.signupLoginLink = this.page.getByRole("link", {
       name: /signup\s*\/\s*login/i,
     });
 
-    // ---- Cookies ----
+    // Cookies
     this.cookiesAcceptButton = this.page.locator(
       'button.fc-button.fc-cta-consent[aria-label="Consent"], button.fc-button.fc-cta-consent:has-text("Consent")',
     );
 
-    // ---- TC10 : Subscription ----
+    // Footer / Subscription
     this.footer = this.page.locator("footer");
 
     this.subscriptionTitle = this.footer.locator("h2").filter({
@@ -44,20 +44,13 @@ export class HomePage {
 
     // ⚠️ ID mal orthographié sur AutomationExercise
     this.subscriptionEmailInput = this.page.locator("#susbscribe_email");
-
     this.subscriptionButton = this.page.locator("#subscribe");
-
     this.subscriptionSuccessMessage = this.page.locator("#success-subscribe");
   }
 
   // ============================================================
-  // Actions génériques Home
+  // Navigation / visibilité
   // ============================================================
-
-  async acceptCookiesIfPresent() {
-    // Accepte les cookies si la pop-up est présente
-    await this.cookiesAcceptButton.click({ timeout: 3000 }).catch(() => {});
-  }
 
   async checkHomeIsVisible() {
     // Vérifie que la Home est visible via un élément clé
@@ -70,7 +63,16 @@ export class HomePage {
   }
 
   // ============================================================
-  // TC10 - Verify Subscription in Home Page
+  // Cookies
+  // ============================================================
+
+  async acceptCookiesIfPresent() {
+    // Accepte les cookies si la pop-up est présente
+    await this.cookiesAcceptButton.click({ timeout: 3000 }).catch(() => {});
+  }
+
+  // ============================================================
+  // Footer / Subscription
   // ============================================================
 
   async scrollToFooter() {

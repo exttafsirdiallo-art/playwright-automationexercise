@@ -69,7 +69,9 @@ test.describe("TC14 - Place Order: Register while Checkout", () => {
     await checkoutPage.clickPlaceOrder();
 
     // 11) Paiement
+    // 11) Paiement
     const paymentPage = new PaymentPage(page);
+    await paymentPage.checkPaymentPageIsVisible();
     await paymentPage.fillPaymentInformation();
     await paymentPage.payAndConfirmOrder();
 

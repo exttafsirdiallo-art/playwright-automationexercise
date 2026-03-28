@@ -1,30 +1,53 @@
-import { Page, expect } from "@playwright/test";
+import { Page, Locator, expect } from "@playwright/test";
 
 export class PaymentPage {
   page: Page;
 
+  nameOnCardInput: Locator;
+  cardNumberInput: Locator;
+  cvcInput: Locator;
+  expiryMonthInput: Locator;
+  expiryYearInput: Locator;
+  payButton: Locator;
+  orderPlacedTitle: Locator;
+
   constructor(page: Page) {
     this.page = page;
+
+    this.nameOnCardInput = this.page.locator('input[data-qa="name-on-card"]');
+    this.cardNumberInput = this.page.locator('input[data-qa="card-number"]');
+    this.cvcInput = this.page.locator('input[data-qa="cvc"]');
+    this.expiryMonthInput = this.page.locator('input[data-qa="expiry-month"]');
+    this.expiryYearInput = this.page.locator('input[data-qa="expiry-year"]');
+    this.payButton = this.page.locator('button[data-qa="pay-button"]');
+    this.orderPlacedTitle = this.page.locator('h2[data-qa="order-placed"]');
+  }
+
+  async checkPaymentPageIsVisible() {
+    // Vérifie qu'on est bien sur la page Payment
+    await expect(this.page).toHaveURL(/\/payment/i);
+    await expect(this.nameOnCardInput).toBeVisible();
   }
 
   async fillPaymentInformation() {
     // Remplit les informations de paiement
-    await this.page.locator('input[data-qa="name-on-card"]').fill("Test User");
-    await this.page
-      .locator('input[data-qa="card-number"]')
-      .fill("4111111111111111");
-    await this.page.locator('input[data-qa="cvc"]').fill("123");
-    await this.page.locator('input[data-qa="expiry-month"]').fill("12");
-    await this.page.locator('input[data-qa="expiry-year"]').fill("2030");
+    await this.checkPaymentPageIsVisible();
+
+    await this.nameOnCardInput.fill("Test User");
+    await this.cardNumberInput.fill("4111111111111111");
+    await this.cvcInput.fill("123");
+    await this.expiryMonthInput.fill("12");
+    await this.expiryYearInput.fill("2030");
   }
 
   async payAndConfirmOrder() {
     // Clique sur Pay and Confirm Order
-    await this.page.locator('button[data-qa="pay-button"]').click();
+    await expect(this.payButton).toBeVisible();
+    await this.payButton.click();
   }
 
   async checkOrderPlacedIsVisible() {
-    // Vérifie le message de succès
-    await expect(this.page.locator('h2[data-qa="order-placed"]')).toBeVisible();
+    // Vérifie le message ORDER PLACED!
+    await expect(this.orderPlacedTitle).toBeVisible();
   }
 }
