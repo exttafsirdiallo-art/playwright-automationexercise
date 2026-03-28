@@ -1,12 +1,13 @@
-import { Page, Locator, expect } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
-export class HomePage {
-  page: Page;
-
+export class HomePage extends BasePage {
   // =========================
   // Header
   // =========================
   signupLoginLink: Locator;
+  loggedInAsText: Locator;
+  deleteAccountLink: Locator;
 
   // =========================
   // Cookies
@@ -21,15 +22,21 @@ export class HomePage {
   subscriptionEmailInput: Locator;
   subscriptionButton: Locator;
   subscriptionSuccessMessage: Locator;
-  loggedInAsText: Locator;
-  deleteAccountLink: Locator;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
 
     // Header
     this.signupLoginLink = this.page.getByRole("link", {
       name: /signup\s*\/\s*login/i,
+    });
+
+    this.loggedInAsText = this.page.locator("a").filter({
+      hasText: /logged in as/i,
+    });
+
+    this.deleteAccountLink = this.page.getByRole("link", {
+      name: /delete account/i,
     });
 
     // Cookies
@@ -48,14 +55,6 @@ export class HomePage {
     this.subscriptionEmailInput = this.page.locator("#susbscribe_email");
     this.subscriptionButton = this.page.locator("#subscribe");
     this.subscriptionSuccessMessage = this.page.locator("#success-subscribe");
-
-    this.loggedInAsText = this.page.locator("a").filter({
-      hasText: /logged in as/i,
-    });
-
-    this.deleteAccountLink = this.page.getByRole("link", {
-      name: /delete account/i,
-    });
   }
 
   // ============================================================
@@ -63,13 +62,19 @@ export class HomePage {
   // ============================================================
 
   async checkHomeIsVisible() {
-    // Vérifie que la Home est visible via un élément clé
-    await expect(this.signupLoginLink).toBeVisible();
+    await this.checkVisible(this.signupLoginLink);
   }
 
   async goToLogin() {
-    // Clique sur "Signup / Login"
-    await this.signupLoginLink.click();
+    await this.click(this.signupLoginLink);
+  }
+
+  async checkLoggedInAs(username: string) {
+    await this.checkContainsText(this.loggedInAsText, username);
+  }
+
+  async goToDeleteAccount() {
+    await this.click(this.deleteAccountLink);
   }
 
   // ============================================================
@@ -77,7 +82,6 @@ export class HomePage {
   // ============================================================
 
   async acceptCookiesIfPresent() {
-    // Accepte les cookies si la pop-up est présente
     await this.cookiesAcceptButton.click({ timeout: 3000 }).catch(() => {});
   }
 
@@ -86,39 +90,24 @@ export class HomePage {
   // ============================================================
 
   async scrollToFooter() {
-    // Scroll jusqu'au footer
-    await this.footer.scrollIntoViewIfNeeded();
+    await this.scrollIntoView(this.footer);
   }
 
   async checkSubscriptionIsVisible() {
-    // Vérifie que le bloc Subscription est visible
-    await expect(this.subscriptionTitle).toBeVisible();
+    await this.checkVisible(this.subscriptionTitle);
   }
 
   async subscribeWithEmail(email: string) {
-    // Saisit l'email et clique sur Subscribe
-    await expect(this.subscriptionEmailInput).toBeVisible();
-    await this.subscriptionEmailInput.fill(email);
-
+    await this.fill(this.subscriptionEmailInput, email);
     await expect(this.subscriptionButton).toBeEnabled();
-    await this.subscriptionButton.click();
+    await this.click(this.subscriptionButton);
   }
 
   async checkSubscriptionSuccess() {
-    // Vérifie le message de succès
-    await expect(this.subscriptionSuccessMessage).toBeVisible();
-    await expect(this.subscriptionSuccessMessage).toContainText(
+    await this.checkVisible(this.subscriptionSuccessMessage);
+    await this.checkContainsText(
+      this.subscriptionSuccessMessage,
       /successfully subscribed/i,
     );
-  }
-
-  async checkLoggedInAs(username: string) {
-    // Vérifie que l'utilisateur est connecté
-    await expect(this.loggedInAsText).toContainText(username);
-  }
-
-  async goToDeleteAccount() {
-    // Clique sur Delete Account
-    await this.deleteAccountLink.click();
   }
 }

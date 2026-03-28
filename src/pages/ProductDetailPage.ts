@@ -1,8 +1,7 @@
-import { Page, Locator, expect } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
-export class ProductDetailPage {
-  page: Page;
-
+export class ProductDetailPage extends BasePage {
   // =========================
   // Product information
   // =========================
@@ -16,7 +15,7 @@ export class ProductDetailPage {
   viewCartLink: Locator;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
 
     // Product information
     this.productInfo = this.page.locator(".product-information");
@@ -32,17 +31,15 @@ export class ProductDetailPage {
   // ============================================================
 
   async checkProductDetailPageIsVisible() {
-    // Vérifie l'URL + le bloc d'informations produit
     await expect(this.page).toHaveURL(/\/product_details\/\d+/);
-    await expect(this.productInfo).toBeVisible();
+    await this.checkVisible(this.productInfo);
   }
 
   async checkProductInfoFieldsAreVisible() {
-    // Vérifie les champs principaux du produit
-    await expect(this.productInfo.getByText(/category/i)).toBeVisible();
-    await expect(this.productInfo.getByText(/availability/i)).toBeVisible();
-    await expect(this.productInfo.getByText(/condition/i)).toBeVisible();
-    await expect(this.productInfo.getByText(/brand/i)).toBeVisible();
+    await this.checkVisible(this.productInfo.getByText(/category/i));
+    await this.checkVisible(this.productInfo.getByText(/availability/i));
+    await this.checkVisible(this.productInfo.getByText(/condition/i));
+    await this.checkVisible(this.productInfo.getByText(/brand/i));
   }
 
   // ============================================================
@@ -50,21 +47,14 @@ export class ProductDetailPage {
   // ============================================================
 
   async setQuantity(quantity: number) {
-    // Modifie la quantité du produit
-    await expect(this.quantityInput).toBeVisible();
-    await this.quantityInput.fill("");
-    await this.quantityInput.fill(String(quantity));
+    await this.fill(this.quantityInput, String(quantity));
   }
 
   async addToCart() {
-    // Clique sur Add to cart
-    await expect(this.addToCartButton).toBeVisible();
-    await this.addToCartButton.click();
+    await this.click(this.addToCartButton);
   }
 
   async goToCartFromModal() {
-    // Clique sur View Cart dans la popin
-    await expect(this.viewCartLink).toBeVisible();
-    await this.viewCartLink.click();
+    await this.click(this.viewCartLink);
   }
 }

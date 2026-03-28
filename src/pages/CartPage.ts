@@ -1,8 +1,7 @@
-import { Page, Locator, expect } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
-export class CartPage {
-  page: Page;
-
+export class CartPage extends BasePage {
   // =========================
   // Header
   // =========================
@@ -23,7 +22,7 @@ export class CartPage {
   subscriptionSuccessMessage: Locator;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
 
     // Header
     this.cartLink = this.page.locator("header").locator('a[href="/view_cart"]');
@@ -48,8 +47,7 @@ export class CartPage {
   // ============================================================
 
   async openFromHeader() {
-    // Ouvre la page panier depuis le header
-    await this.cartLink.click();
+    await this.click(this.cartLink);
     await expect(this.page).toHaveURL(/\/view_cart/i);
   }
 
@@ -58,12 +56,10 @@ export class CartPage {
   // ============================================================
 
   async checkTwoProductsInCart() {
-    // Vérifie qu'il y a exactement 2 lignes produit dans le panier
     await expect(this.cartRows).toHaveCount(2);
   }
 
   async checkEachProductQtyIsOne() {
-    // Vérifie que chaque produit a une quantité de 1
     const count = await this.cartRows.count();
 
     for (let i = 0; i < count; i++) {
@@ -77,7 +73,6 @@ export class CartPage {
   }
 
   async checkTotalEqualsPriceTimesQty() {
-    // Vérifie que total = prix × quantité pour chaque ligne
     const count = await this.cartRows.count();
 
     for (let i = 0; i < count; i++) {
@@ -101,7 +96,6 @@ export class CartPage {
   }
 
   async checkProductQuantity(expectedQty: number) {
-    // Vérifie la quantité du premier produit dans le panier
     const qtyText = (
       await this.page.locator(".cart_quantity button").first().innerText()
     ).trim();
@@ -114,28 +108,23 @@ export class CartPage {
   // ============================================================
 
   async scrollToFooter() {
-    // Scroll jusqu'au footer
-    await this.footer.scrollIntoViewIfNeeded();
+    await this.scrollIntoView(this.footer);
   }
 
   async checkSubscriptionIsVisible() {
-    // Vérifie que le bloc Subscription est visible
-    await expect(this.subscriptionTitle).toBeVisible();
+    await this.checkVisible(this.subscriptionTitle);
   }
 
   async subscribeWithEmail(email: string) {
-    // Saisit l'email et clique sur Subscribe
-    await expect(this.subscriptionEmailInput).toBeVisible();
-    await this.subscriptionEmailInput.fill(email);
-
+    await this.fill(this.subscriptionEmailInput, email);
     await expect(this.subscriptionButton).toBeEnabled();
-    await this.subscriptionButton.click();
+    await this.click(this.subscriptionButton);
   }
 
   async checkSubscriptionSuccess() {
-    // Vérifie le message de succès
-    await expect(this.subscriptionSuccessMessage).toBeVisible();
-    await expect(this.subscriptionSuccessMessage).toContainText(
+    await this.checkVisible(this.subscriptionSuccessMessage);
+    await this.checkContainsText(
+      this.subscriptionSuccessMessage,
       /successfully subscribed/i,
     );
   }

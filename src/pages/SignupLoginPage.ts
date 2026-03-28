@@ -1,9 +1,8 @@
-import { Page, Locator, expect } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
+import { BasePage } from "./BasePage";
 import signupData from "../data/signupData.json";
 
-export class SignupLoginPage {
-  page: Page;
-
+export class SignupLoginPage extends BasePage {
   // =========================
   // Signup
   // =========================
@@ -42,7 +41,7 @@ export class SignupLoginPage {
   createAccountButton: Locator;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
 
     // Signup
     this.newUserSignupTitle = this.page.getByRole("heading", {
@@ -87,13 +86,11 @@ export class SignupLoginPage {
   // ============================================================
 
   async checkNewUserSignupIsVisible() {
-    // Vérifie qu'on voit bien le bloc "New User Signup!"
-    await expect(this.newUserSignupTitle).toBeVisible();
+    await this.checkVisible(this.newUserSignupTitle);
   }
 
   async checkEnterAccountInformationIsVisible() {
-    // Vérifie qu'on arrive sur la page du formulaire de création de compte
-    await expect(this.enterAccountInformationTitle).toBeVisible();
+    await this.checkVisible(this.enterAccountInformationTitle);
   }
 
   // ============================================================
@@ -101,10 +98,9 @@ export class SignupLoginPage {
   // ============================================================
 
   async signup(name: string, email: string) {
-    // Remplit Name + Email puis clique sur Signup
-    await this.signupNameInput.fill(name);
-    await this.signupEmailInput.fill(email);
-    await this.signupButton.click();
+    await this.fill(this.signupNameInput, name);
+    await this.fill(this.signupEmailInput, email);
+    await this.click(this.signupButton);
   }
 
   // ============================================================
@@ -114,40 +110,33 @@ export class SignupLoginPage {
   async fillAccountInformation(name: string, email: string, password: string) {
     const data = signupData.user;
 
-    // Sélectionne un titre
     await this.titleMrRadio.check();
 
-    // Vérifie nom + email préremplis
     await expect(this.nameInput).toHaveValue(name);
     await expect(this.emailInput).toHaveValue(email);
 
-    // Mot de passe
-    await this.passwordInput.fill(password);
+    await this.fill(this.passwordInput, password);
 
-    // Date de naissance
     await this.daySelect.selectOption("1");
     await this.monthSelect.selectOption("1");
     await this.yearSelect.selectOption("2000");
 
-    // Newsletter / offers
     await this.newsletterCheckbox.check();
     await this.specialOffersCheckbox.check();
 
-    // Adresse
-    await this.firstNameInput.fill(name);
-    await this.lastNameInput.fill(data.lastName);
-    await this.companyInput.fill(data.company);
-    await this.address1Input.fill(data.address1);
-    await this.address2Input.fill(data.address2);
+    await this.fill(this.firstNameInput, name);
+    await this.fill(this.lastNameInput, data.lastName);
+    await this.fill(this.companyInput, data.company);
+    await this.fill(this.address1Input, data.address1);
+    await this.fill(this.address2Input, data.address2);
     await this.countrySelect.selectOption(data.country);
-    await this.stateInput.fill(data.state);
-    await this.cityInput.fill(data.city);
-    await this.zipcodeInput.fill(data.zipcode);
-    await this.mobileNumberInput.fill(data.mobile);
+    await this.fill(this.stateInput, data.state);
+    await this.fill(this.cityInput, data.city);
+    await this.fill(this.zipcodeInput, data.zipcode);
+    await this.fill(this.mobileNumberInput, data.mobile);
   }
 
   async createAccount() {
-    // Clique sur Create Account
-    await this.createAccountButton.click();
+    await this.click(this.createAccountButton);
   }
 }

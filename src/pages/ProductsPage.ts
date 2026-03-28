@@ -1,8 +1,7 @@
-import { Page, Locator, expect } from "@playwright/test";
+import { Locator, Page, expect } from "@playwright/test";
+import { BasePage } from "./BasePage";
 
-export class ProductsPage {
-  page: Page;
-
+export class ProductsPage extends BasePage {
   // =========================
   // Header
   // =========================
@@ -29,7 +28,7 @@ export class ProductsPage {
   viewCartLink: Locator;
 
   constructor(page: Page) {
-    this.page = page;
+    super(page);
 
     // Header
     this.productsLink = this.page
@@ -63,13 +62,11 @@ export class ProductsPage {
   // ============================================================
 
   async openFromHeader() {
-    // Clique sur "Products" dans le header
-    await this.productsLink.click();
+    await this.click(this.productsLink);
   }
 
   async openFirstProductDetails() {
-    // Clique sur le premier lien "View Product"
-    await this.page.locator('a[href^="/product_details/"]').first().click();
+    await this.click(this.page.locator('a[href^="/product_details/"]').first());
   }
 
   // ============================================================
@@ -77,43 +74,34 @@ export class ProductsPage {
   // ============================================================
 
   async checkAllProductsPageIsVisible() {
-    // Vérifie l'URL + le titre "All Products"
     await expect(this.page).toHaveURL(/\/products/i);
-    await expect(this.allProductsTitle).toBeVisible();
+    await this.checkVisible(this.allProductsTitle);
   }
 
   async checkProductsListIsVisible() {
-    // Vérifie que la grille produits est visible
-    await expect(this.productsGrid).toBeVisible();
+    await this.checkVisible(this.productsGrid);
   }
 
   // ============================================================
-  // Recherche (TC09)
+  // Recherche
   // ============================================================
 
   async searchProduct(keyword: string) {
-    // Saisit le mot-clé + clique sur Search
-    await expect(this.searchInput).toBeVisible();
-    await this.searchInput.fill(keyword);
-
+    await this.fill(this.searchInput, keyword);
     await expect(this.searchButton).toBeEnabled();
-    await this.searchButton.click();
+    await this.click(this.searchButton);
   }
 
   async checkSearchedProductsIsVisible() {
-    // Vérifie que "SEARCHED PRODUCTS" est visible
-    await expect(this.searchedProductsTitle).toBeVisible();
+    await this.checkVisible(this.searchedProductsTitle);
   }
 
   async checkSearchResultsContain(keyword: string) {
-    // Vérifie qu'il y a au moins 1 résultat
-    await expect(this.productCards.first()).toBeVisible();
+    await this.checkVisible(this.productCards.first());
 
     const count = await this.productCards.count();
     expect(count, "Aucun résultat après la recherche").toBeGreaterThan(0);
 
-    // AutomationExercise n'est pas toujours strict :
-    // on vérifie qu'au moins 1 produit contient le mot-clé
     const kw = keyword.toLowerCase();
     let matchCount = 0;
 
@@ -135,30 +123,23 @@ export class ProductsPage {
   }
 
   // ============================================================
-  // Panier (TC12 / TC14)
+  // Panier
   // ============================================================
 
   async addProductToCartByIndex(index: number) {
-    // Ajoute un produit au panier depuis la liste produits
     const card = this.productCards.nth(index);
 
-    // Le bouton "Add to cart" apparaît au hover
     await card.hover();
 
     const addToCartButton = card.locator('a:has-text("Add to cart")').first();
-    await expect(addToCartButton).toBeVisible();
-    await addToCartButton.click();
+    await this.click(addToCartButton);
   }
 
   async continueShoppingFromModal() {
-    // Clique sur "Continue Shopping" dans la popin
-    await expect(this.continueShoppingButton).toBeVisible();
-    await this.continueShoppingButton.click();
+    await this.click(this.continueShoppingButton);
   }
 
   async viewCartFromModal() {
-    // Clique sur "View Cart" dans la popin
-    await expect(this.viewCartLink).toBeVisible();
-    await this.viewCartLink.click();
+    await this.click(this.viewCartLink);
   }
 }
