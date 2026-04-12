@@ -13,7 +13,7 @@ test("XTP-38 - TC02 - Login User with correct email and password", async ({
   // Accepter les cookies si la pop-up est présente
   await home.acceptCookiesIfPresent();
   await home.checkHomeIsVisible();
-  await home.goToLogin();
+  await home.goToLoginss();
 
   const loginPage = new LoginPage(page);
   await loginPage.checkLoginFormIsVisible();
