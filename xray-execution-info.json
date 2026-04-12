@@ -4,6 +4,9 @@
       "key": "XTP"
     },
     "summary": "AEQ - Playwright CI Execution",
-    "description": "Execution automatique des tests Playwright via GitHub Actions"
+    "description": "Execution automatique des tests Playwright via GitHub Actions",
+    "issuetype": {
+      "name": "Test Execution"
+    }
   }
 }
