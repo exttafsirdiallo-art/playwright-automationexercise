@@ -59,10 +59,31 @@ jobs:
           echo "Token length: ${#TOKEN}"
           echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
 
+      - name: Generate timestamp
+        if: always()
+        id: timestamp
+        shell: bash
+        run: echo "DATE=$(date '+%Y-%m-%d %H:%M')" >> "$GITHUB_OUTPUT"
+
       - name: Upload results to Xray
         if: always()
         shell: bash
         run: |
+          cat <<EOF > xray-execution-info.json
+          {
+            "fields": {
+              "project": {
+                "key": "XTP"
+              },
+              "summary": "AEQ - Playwright CI Execution - ${{ steps.timestamp.outputs.DATE }}",
+              "description": "Execution automatique des tests Playwright via GitHub Actions",
+              "issuetype": {
+                "name": "Test Execution"
+              }
+            }
+          }
+          EOF
+
           for i in 1 2 3; do
             echo "Upload attempt $i"
             HTTP_CODE=$(curl --silent --show-error --write-out "%{http_code}" --output response.txt \
