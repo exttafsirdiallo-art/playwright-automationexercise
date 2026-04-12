@@ -1,21 +1,54 @@
-- name: Run Playwright tests for Xray
-  run: npm run xray:test
-  continue-on-error: true
+name: Playwright Tests
 
-- name: Get Xray token
-  if: always()
-  id: xray_auth
-  shell: bash
-  run: |
-    TOKEN=$(curl -s -X POST "https://xray.cloud.getxray.app/api/v2/authenticate" \
-      -H "Content-Type: application/json" \
-      -d "{\"client_id\":\"${{ secrets.XRAY_CLIENT_ID }}\",\"client_secret\":\"${{ secrets.XRAY_CLIENT_SECRET }}\"}" | tr -d '"')
-    echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
 
-- name: Upload results to Xray
-  if: always()
-  shell: bash
-  run: |
-    curl -s -X POST "https://xray.cloud.getxray.app/api/v2/import/execution/junit" \
-      -H "Authorization: Bearer ${{ steps.xray_auth.outputs.token }}" \
-      -F "file=@playwright-report/results.xml"
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests for Xray
+        run: npm run xray:test
+        continue-on-error: true
+
+      - name: Get Xray token
+        if: always()
+        id: xray_auth
+        shell: bash
+        run: |
+          TOKEN=$(curl -s -X POST "https://xray.cloud.getxray.app/api/v2/authenticate" \
+            -H "Content-Type: application/json" \
+            -d "{\"client_id\":\"${{ secrets.XRAY_CLIENT_ID }}\",\"client_secret\":\"${{ secrets.XRAY_CLIENT_SECRET }}\"}" | tr -d '"')
+          echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
+
+      - name: Upload results to Xray
+        if: always()
+        shell: bash
+        run: |
+          curl -s -X POST "https://xray.cloud.getxray.app/api/v2/import/execution/junit" \
+            -H "Authorization: Bearer ${{ steps.xray_auth.outputs.token }}" \
+            -F "file=@playwright-report/results.xml"
+
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
