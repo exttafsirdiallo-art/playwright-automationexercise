@@ -8,6 +8,7 @@
     "test:headed": "playwright test --project=chromium --headed",
     "test:debug": "playwright test --debug",
     "test:ui": "playwright test --ui",
+    "xray:test": "PLAYWRIGHT_JUNIT_OUTPUT_FILE=./playwright-report/results.xml playwright test --reporter=junit -g \"XTP-\"",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",

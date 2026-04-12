@@ -3,7 +3,9 @@ import { HomePage } from "../src/pages/HomePage";
 import { LoginPage } from "../src/pages/LoginPage";
 import { credentials } from "../src/data/credentials";
 
-test("TC02 - Login User with correct email and password", async ({ page }) => {
+test("XTP-38 - TC02 - Login User with correct email and password", async ({
+  page,
+}) => {
   // Ouvre la Home (baseURL + '/')
   await page.goto("/");
 

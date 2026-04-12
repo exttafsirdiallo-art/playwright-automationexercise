@@ -4,7 +4,7 @@ import { HomePage } from "../src/pages/HomePage";
 import { LoginPage } from "../src/pages/LoginPage";
 import { credentials } from "../src/data/credentials";
 
-test("TC04 - Logout User", async ({ page }) => {
+test("XTP-41 - TC04 - Logout User", async ({ page }) => {
   // 1) Ouvrir la Home
   await openHome(page);
 

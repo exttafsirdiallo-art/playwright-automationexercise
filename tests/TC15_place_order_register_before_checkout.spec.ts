@@ -11,7 +11,7 @@ import { AccountDeletedPage } from "../src/pages/AccountDeletedPage";
 import { createUser } from "../src/data/userFactory";
 import { orderData } from "../src/data/orderData";
 
-test.describe("TC15 - Place Order: Register before Checkout", () => {
+test.describe("XTP-52 - TC15 - Place Order: Register before Checkout", () => {
   test("Créer un compte avant checkout puis finaliser la commande", async ({
     page,
   }) => {

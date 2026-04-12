@@ -10,7 +10,7 @@ import { PaymentPage } from "../src/pages/PaymentPage";
 import { createUser } from "../src/data/userFactory";
 import { orderData } from "../src/data/orderData";
 
-test.describe("TC14 - Place Order: Register while Checkout", () => {
+test.describe("XTP-51 - TC14 - Place Order: Register while Checkout", () => {
   test("Créer un compte pendant le checkout et finaliser la commande", async ({
     page,
   }) => {

@@ -2,7 +2,7 @@ import { test } from "@playwright/test";
 import { openHome } from "../src/utils/navigation";
 import { HomePage } from "../src/pages/HomePage";
 
-test.describe("TC10 - Verify Subscription in Home Page", () => {
+test.describe("XTP-45 - TC10 - Verify Subscription in Home Page", () => {
   test("Vérifier l'abonnement via le bloc Subscription", async ({ page }) => {
     const email = `tc10_${Date.now()}@example.com`;
 

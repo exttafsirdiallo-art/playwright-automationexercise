@@ -3,7 +3,7 @@ import { openHome } from "../src/utils/navigation";
 import { HomePage } from "../src/pages/HomePage";
 import { CartPage } from "../src/pages/CartPage";
 
-test.describe("TC11 - Verify Subscription in Cart Page", () => {
+test.describe("XTP-46 - TC11 - Verify Subscription in Cart Page", () => {
   test("S'abonner depuis la page Cart et vérifier le message de succès", async ({
     page,
   }) => {

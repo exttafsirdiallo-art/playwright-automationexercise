@@ -4,7 +4,7 @@ import { openHome } from "../src/utils/navigation";
 import { HomePage } from "../src/pages/HomePage";
 import { orderData } from "../src/data/orderData";
 
-test.describe("TC09 - Search Product", () => {
+test.describe("XTP-48 - TC09 - Search Product", () => {
   test("Rechercher un produit et vérifier les résultats", async ({ page }) => {
     const keyword = orderData.searchKeyword;
 

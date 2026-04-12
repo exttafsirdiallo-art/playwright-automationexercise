@@ -4,7 +4,7 @@ import { HomePage } from "../src/pages/HomePage";
 import { ProductsPage } from "../src/pages/ProductsPage";
 import { CartPage } from "../src/pages/CartPage";
 
-test.describe("TC12 - Add Products in Cart", () => {
+test.describe("XTP-49 - TC12 - Add Products in Cart", () => {
   test("Ajouter 2 produits au panier et vérifier le panier", async ({
     page,
   }) => {

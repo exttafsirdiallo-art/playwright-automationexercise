@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { openHome } from "../src/utils/navigation";
 import { HomePage } from "../src/pages/HomePage";
 
-test("TC06 - Contact Us Form", async ({ page }) => {
+test("XTP-43 - TC06 - Contact Us Form", async ({ page }) => {
   // 1) Ouvrir la Home
   await openHome(page);
 

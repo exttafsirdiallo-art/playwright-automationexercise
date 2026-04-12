@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 import { openHome } from "../src/utils/navigation";
 import { HomePage } from "../src/pages/HomePage";
 
-test("TC07 - Verify Test Cases Page", async ({ page }) => {
+test("XTP-44 - TC07 - Verify Test Cases Page", async ({ page }) => {
   // 1) Ouvrir la Home
   await openHome(page);
 

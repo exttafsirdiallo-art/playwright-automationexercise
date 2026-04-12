@@ -3,7 +3,7 @@ import { openHome } from "../src/utils/navigation";
 import { HomePage } from "../src/pages/HomePage";
 import { LoginPage } from "../src/pages/LoginPage";
 
-test("TC03 - Login User with incorrect email and password", async ({
+test("XTP-40 - TC03 - Login User with incorrect email and password", async ({
   page,
 }) => {
   // 1) Ouvrir la Home

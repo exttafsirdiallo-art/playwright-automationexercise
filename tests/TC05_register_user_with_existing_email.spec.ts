@@ -4,7 +4,7 @@ import { HomePage } from "../src/pages/HomePage";
 import { SignupLoginPage } from "../src/pages/SignupLoginPage";
 import { credentials } from "../src/data/credentials";
 
-test("TC05 - Register User with existing email", async ({ page }) => {
+test("XTP-42 - TC05 - Register User with existing email", async ({ page }) => {
   // 1) Ouvrir la Home
   await openHome(page);
 

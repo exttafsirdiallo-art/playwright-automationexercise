@@ -1,0 +1,14 @@
+<testsuites id="" name="" tests="3" failures="0" skipped="0" errors="0" time="8.483680999999999">
+<testsuite name="TC02_login_user_with_correct_email_and_password.spec.ts" timestamp="2026-04-12T00:09:24.215Z" hostname="chromium" tests="1" failures="0" skipped="0" time="6.93" errors="0">
+<testcase name="XTP-9 - TC02 - Login User with correct email and password" classname="TC02_login_user_with_correct_email_and_password.spec.ts" time="6.93">
+</testcase>
+</testsuite>
+<testsuite name="TC03_login_user_with_incorrect_email_and_password.spec.ts" timestamp="2026-04-12T00:09:24.215Z" hostname="chromium" tests="1" failures="0" skipped="0" time="6.877" errors="0">
+<testcase name="XTP-11 - TC03 - Login User with incorrect email and password" classname="TC03_login_user_with_incorrect_email_and_password.spec.ts" time="6.877">
+</testcase>
+</testsuite>
+<testsuite name="TC09_search_product.spec.ts" timestamp="2026-04-12T00:09:24.215Z" hostname="chromium" tests="1" failures="0" skipped="0" time="6.928" errors="0">
+<testcase name="XTP-12 - TC09 - Search Product › Rechercher un produit et vérifier les résultats" classname="TC09_search_product.spec.ts" time="6.928">
+</testcase>
+</testsuite>
+</testsuites>

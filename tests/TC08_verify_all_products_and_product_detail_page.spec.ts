@@ -4,7 +4,9 @@ import { HomePage } from "../src/pages/HomePage";
 import { ProductsPage } from "../src/pages/ProductsPage";
 import { ProductDetailPage } from "../src/pages/ProductDetailPage";
 
-test("TC08 - Verify All Products and product detail page", async ({ page }) => {
+test("XTP-47 - TC08 - Verify All Products and product detail page", async ({
+  page,
+}) => {
   // 1) Ouvrir la Home
   await openHome(page);
 
