@@ -33,18 +33,38 @@ jobs:
         id: xray_auth
         shell: bash
         run: |
-          TOKEN=$(curl -s -X POST "https://xray.cloud.getxray.app/api/v2/authenticate" \
+          TOKEN=$(curl --silent --show-error -X POST "https://xray.cloud.getxray.app/api/v2/authenticate" \
             -H "Content-Type: application/json" \
             -d "{\"client_id\":\"${{ secrets.XRAY_CLIENT_ID }}\",\"client_secret\":\"${{ secrets.XRAY_CLIENT_SECRET }}\"}" | tr -d '"')
+
+          echo "Token length: ${#TOKEN}"
           echo "token=$TOKEN" >> "$GITHUB_OUTPUT"
 
       - name: Upload results to Xray
         if: always()
         shell: bash
         run: |
-          curl -s -X POST "https://xray.cloud.getxray.app/api/v2/import/execution/junit" \
-            -H "Authorization: Bearer ${{ steps.xray_auth.outputs.token }}" \
-            -F "file=@playwright-report/results.xml"
+          for i in 1 2 3; do
+            echo "Upload attempt $i"
+            HTTP_CODE=$(curl --silent --show-error --write-out "%{http_code}" --output response.txt \
+              -X POST "https://xray.cloud.getxray.app/api/v2/import/execution/junit" \
+              -H "Authorization: Bearer ${{ steps.xray_auth.outputs.token }}" \
+              -F "file=@playwright-report/results.xml")
+
+            echo "HTTP status: $HTTP_CODE"
+            cat response.txt || true
+
+            if [ "$HTTP_CODE" = "200" ] || [ "$HTTP_CODE" = "201" ]; then
+              echo "Upload to Xray succeeded"
+              exit 0
+            fi
+
+            echo "Upload failed, waiting before retry..."
+            sleep 15
+          done
+
+          echo "Upload to Xray failed after 3 attempts"
+          exit 1
 
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
