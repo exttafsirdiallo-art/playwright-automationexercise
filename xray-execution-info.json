@@ -1,0 +1,9 @@
+{
+  "fields": {
+    "project": {
+      "key": "XTP"
+    },
+    "summary": "AEQ - Playwright CI Execution",
+    "description": "Execution automatique des tests Playwright via GitHub Actions"
+  }
+}

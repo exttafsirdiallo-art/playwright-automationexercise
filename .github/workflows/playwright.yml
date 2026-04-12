@@ -68,7 +68,8 @@ jobs:
             HTTP_CODE=$(curl --silent --show-error --write-out "%{http_code}" --output response.txt \
               -X POST "https://xray.cloud.getxray.app/api/v2/import/execution/junit/multipart" \
               -H "Authorization: Bearer ${{ steps.xray_auth.outputs.token }}" \
-              -F "file=@playwright-report/results.xml")
+              -F "results=@playwright-report/results.xml;type=application/xml" \
+              -F "info=@xray-execution-info.json;type=application/json")
 
             echo "HTTP status: $HTTP_CODE"
             cat response.txt || true
