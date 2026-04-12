@@ -32,7 +32,7 @@ test("XTP-37 - TC01 - Register User (complete)", async ({ page }) => {
   const accountInfo = new AccountInformationPage(page);
   await accountInfo.checkPageIsVisible();
 
-  await accountInfo.fillAccountInformation("Password123!");
+  await accountInfo.fillAccountInformation("Password123!xw");
   await accountInfo.fillAddressInformation();
 
   // 8 Créer le compte
